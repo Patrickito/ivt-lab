@@ -1,5 +1,5 @@
 package hu.bme.mit.spaceship;
-
+//Ez egy teszt a konfliktushoz.
 /**
 * A simple spaceship with two proton torpedo stores and four lasers
 */
