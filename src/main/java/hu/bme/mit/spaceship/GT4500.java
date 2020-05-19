@@ -1,21 +1,22 @@
 package hu.bme.mit.spaceship;
+
 //Ez egy teszt a konfliktushoz.
 /**
-* A simple spaceship with two proton torpedo stores and four lasers
-*/
+ * A simple spaceship with two proton torpedo stores and four lasers
+ */
 public class GT4500 implements SpaceShip {
 
-  private TorpedoStore primaryTorpedoStore;
-  private TorpedoStore secondaryTorpedoStore;
+  private final TorpedoStore primaryTorpedoStore;
+  private final TorpedoStore secondaryTorpedoStore;
 
   private boolean wasPrimaryFiredLast = false;
 
-  public GT4500() {
-    this.primaryTorpedoStore = new TorpedoStore(10);
-    this.secondaryTorpedoStore = new TorpedoStore(10);
+  public GT4500(final TorpedoStore ts1, final TorpedoStore ts2) {
+    this.primaryTorpedoStore = ts1;
+    this.secondaryTorpedoStore = ts2;
   }
 
-  public boolean fireLaser(FiringMode firingMode) {
+  public boolean fireLaser(final FiringMode firingMode) {
     // TODO not implemented yet
     return false;
   }
@@ -34,12 +35,11 @@ public class GT4500 implements SpaceShip {
   * @return whether at least one torpedo was fired successfully
   */
   @Override
-  public boolean fireTorpedo(FiringMode firingMode) {
+  public boolean fireTorpedo(final FiringMode firingMode) {
 
     boolean firingSuccess = false;
 
-    switch (firingMode) {
-      case SINGLE:
+    if (firingMode == FiringMode.SINGLE) {
         if (wasPrimaryFiredLast) {
           // try to fire the secondary first
           if (! secondaryTorpedoStore.isEmpty()) {
@@ -74,9 +74,8 @@ public class GT4500 implements SpaceShip {
             // if both of the stores are empty, nothing can be done, return failure
           }
         }
-        break;
-
-      case ALL:
+      }
+      else{
         // try to fire both of the torpedo stores
         
         boolean primaryFiringSuccess = false;
@@ -90,14 +89,11 @@ public class GT4500 implements SpaceShip {
           secondaryFiringSuccess = secondaryTorpedoStore.fire(1);
           wasPrimaryFiredLast = false;
         }
-        
-        if(primaryFiringSuccess && secondaryFiringSuccess){
+  
+        if(primaryFiringSuccess || secondaryFiringSuccess){
           firingSuccess = true;
         }
-        // if one or both of the stores are empty, return failure
-        break;
-    }
-
+      }
     return firingSuccess;
   }
 
